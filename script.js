@@ -261,7 +261,7 @@ function initializePageSpecificFeatures(currentPage) {
     console.log('Initializing page-specific features for:', currentPage);
     
     const pageConfig = {
-        'Home.html': initHomePage,
+        'index.html': initHomePage,
         'index.html': initHomePage,
         '': initHomePage,
         'Mountain Life.html': initMountainLifePage,
@@ -2322,4 +2322,5 @@ window.adminLogout = adminLogout;
 window.showNotification = showNotification;
 window.likeArticle = likeArticle;
 window.shareArticle = shareArticle;
+
 window.debugStorage = debugStorage;
