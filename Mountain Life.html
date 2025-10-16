@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mountain Life | Life in the Pahadi</title>
+    <meta name="description" content="Explore the diverse aspects of mountain living including lifestyle, culture, adventure and environment">
+    <meta name="keywords" content="mountain lifestyle, culture, adventure, environment, pahadi life">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <h1>Life in the Pahadi</h1>
+                <div class="tagline">My mountains, my identity</div>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="Home.html">Home</a></li>
+                    <li><a href="Mountain Life.html">Mountain Life</a></li>
+                    <li><a href="Gallery.html">Gallery</a></li>
+                    <li><a href="Admin.html">Admin</a></li>
+                    <li><a href="About Us.html">About Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Rest of Mountain Life.html content remains the same -->
+    <!-- Mountain Life Section -->
+    <section class="container" id="mountain-life">
+        <h2 class="section-title">Mountain Life</h2>
+        
+        <div class="content-tabs">
+            <button class="content-tab active" data-tab="lifestyle">Lifestyle</button>
+            <button class="content-tab" data-tab="culture">Cultural Heritage</button>
+            <button class="content-tab" data-tab="adventure">Adventure</button>
+            <button class="content-tab" data-tab="environment">Environment</button>
+        </div>
+        
+        <div class="content-section active" id="lifestyle-content">
+            <div class="mountain-life-grid">
+                <div class="empty-state">
+                    <h3>No Lifestyle Content Yet</h3>
+                    <p>Upload lifestyle content using the Admin Panel</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-section" id="culture-content">
+            <div class="heritage-grid">
+                <div class="empty-state">
+                    <h3>No Cultural Heritage Content Yet</h3>
+                    <p>Upload cultural heritage content using the Admin Panel</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-section" id="adventure-content">
+            <div class="adventure-grid">
+                <div class="empty-state">
+                    <h3>No Adventure Content Yet</h3>
+                    <p>Upload adventure content using the Admin Panel</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-section" id="environment-content">
+            <div class="mountain-life-grid">
+                <div class="empty-state">
+                    <h3>No Environment Content Yet</h3>
+                    <p>Upload environment content using the Admin Panel</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Life in the Pahadi</h3>
+                    <p>My mountains, my identity</p>
+                    <p>Celebrating the spirit of mountain life through stories, images, and experiences.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="Home.html">Home</a></li>
+                        <li><a href="Mountain Life.html">Mountain Life</a></li>
+                        <li><a href="Gallery.html">Gallery</a></li>
+                        <li><a href="Admin.html">Admin</a></li>
+                        <li><a href="About Us.html">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li>Email: info@lifeinthepahadi.com</li>
+                        <li>Phone: +1 234 567 8900</li>
+                        <li>Address: Mountain View, Himalayan Foothills</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; <span id="current-year"></span> Life in the Pahadi. All rights reserved.</p>
+                <p>All content is original and created specifically for Life in the Pahadi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-to-top" id="scrollToTop">↑</button>
+
+    <!-- Modal for Content Viewing -->
+    <div class="modal" id="content-modal">
+        <div class="modal-content">
+            <button class="close-modal" id="close-modal">&times;</button>
+            <div class="modal-header">
+                <img id="modal-image" src="" alt="Content Image">
+                <div class="modal-header-overlay">
+                    <h2 id="modal-title">Content Title</h2>
+                    <div class="modal-meta" id="modal-meta"></div>
+                </div>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Mountain Life page specific initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            renderLifestyle();
+            renderCulture();
+            renderAdventure();
+            renderEnvironment();
+            
+            // Set current year in copyright
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+        });
+    </script>
+</body>
+</html>

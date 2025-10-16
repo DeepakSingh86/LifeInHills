@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Life in the Pahadi</title>
+    <meta name="description" content="Learn about Life in the Pahadi magazine and our mission to preserve mountain culture">
+    <meta name="keywords" content="about us, mission, mountain culture, pahadi magazine">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <h1>Life in the Pahadi</h1>
+                <div class="tagline">My mountains, my identity</div>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="Home.html">Home</a></li>
+                    <li><a href="Mountain Life.html">Mountain Life</a></li>
+                    <li><a href="Gallery.html">Gallery</a></li>
+                    <li><a href="Admin.html">Admin</a></li>
+                    <li><a href="About Us.html">About Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Rest of About Us.html content remains the same -->
+    <!-- About Section -->
+    <section class="container" id="about">
+        <h2 class="section-title">About Life in the Pahadi</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <p>Life in the Pahadi is a monthly digital magazine dedicated to capturing the essence of mountain living. Our mission is to preserve and share the rich cultural heritage, breathtaking landscapes, and unique lifestyles found in the world's mountainous regions.</p>
+                <p>Founded in 2020, our publication brings together writers, photographers, and videographers who share a deep connection with the mountains. Each issue explores different aspects of mountain life - from traditional practices and local cuisine to environmental challenges and adventure stories.</p>
+                <p>We believe that mountains are not just geographical features but living entities that shape identities, cultures, and worldviews. Through our magazine, we aim to foster appreciation for these majestic landscapes and the communities that call them home.</p>
+                <p>All content published in Life in the Pahadi is original and created specifically for our publication. We do not use copyrighted material from other sources without proper authorization.</p>
+                
+                <h3>Our Team</h3>
+                <p>Our team consists of passionate individuals who have grown up in mountain communities or have developed deep connections with mountain cultures through years of exploration and immersion.</p>
+                
+                <h3>Our Values</h3>
+                <ul>
+                    <li><strong>Authenticity:</strong> We prioritize genuine stories and experiences</li>
+                    <li><strong>Respect:</strong> We honor the cultures and environments we document</li>
+                    <li><strong>Sustainability:</strong> We promote eco-friendly practices and conservation</li>
+                    <li><strong>Community:</strong> We believe in the power of shared stories</li>
+                </ul>
+            </div>
+            <div class="about-image">
+                <div>Life in the Pahadi</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Life in the Pahadi</h3>
+                    <p>My mountains, my identity</p>
+                    <p>Celebrating the spirit of mountain life through stories, images, and experiences.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="Home.html">Home</a></li>
+                        <li><a href="Mountain Life.html">Mountain Life</a></li>
+                        <li><a href="Gallery.html">Gallery</a></li>
+                        <li><a href="Admin.html">Admin</a></li>
+                        <li><a href="About Us.html">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li>Email: info@lifeinthepahadi.com</li>
+                        <li>Phone: +1 234 567 8900</li>
+                        <li>Address: Mountain View, Himalayan Foothills</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; <span id="current-year"></span> Life in the Pahadi. All rights reserved.</p>
+                <p>All content is original and created specifically for Life in the Pahadi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-to-top" id="scrollToTop">↑</button>
+
+    <script src="script.js"></script>
+    <script>
+        // About page specific initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current year in copyright
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+        });
+    </script>
+</body>
+</html>

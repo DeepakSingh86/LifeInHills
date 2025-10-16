@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Life in the Pahadi</title>
+    <meta name="description" content="Admin panel for managing Life in the Pahadi magazine content">
+    <meta name="keywords" content="admin, content management, upload, magazine">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <h1>Life in the Pahadi</h1>
+                <div class="tagline">My mountains, my identity</div>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="Home.html">Home</a></li>
+                    <li><a href="Mountain Life.html">Mountain Life</a></li>
+                    <li><a href="Gallery.html">Gallery</a></li>
+                    <li><a href="Admin.html">Admin</a></li>
+                    <li><a href="About Us.html">About Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Password Protection Section (Visible by default) -->
+    <section class="container" id="password-section">
+        <div class="admin-login">
+            <h2 class="section-title">Admin Access Required</h2>
+            <div class="login-form-container">
+                <form id="admin-login-form">
+                    <div class="form-group">
+                        <label for="admin-password">Enter Admin Password</label>
+                        <input type="password" id="admin-password" required placeholder="Enter password to access admin panel">
+                        <small>Default password: pahadi2024</small>
+                    </div>
+                    <button type="submit" class="admin-submit">Access Admin Panel</button>
+                    <div class="login-error" id="login-error" style="display: none;">
+                        Invalid password. Please try again.
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Panel Section (Hidden until authenticated) -->
+    <section class="container" id="admin-panel-section" style="display: none;">
+        <h2 class="section-title">Admin Panel</h2>
+        <div class="admin-panel">
+            <div class="admin-header">
+                <div class="admin-welcome">
+                    <h3>Welcome, Administrator</h3>
+                    <button id="logout-btn" class="logout-btn">Logout</button>
+                </div>
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <span class="stat-number" id="magazines-count">0</span>
+                        <span class="stat-label">Magazine Issues</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="content-count">0</span>
+                        <span class="stat-label">Content Items</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="media-count">0</span>
+                        <span class="stat-label">Media Files</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="subscribers-count">0</span>
+                        <span class="stat-label">Subscribers</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="admin-tabs">
+                <button class="admin-tab active" data-tab="magazine">Magazine</button>
+                <button class="admin-tab" data-tab="lifestyle">Lifestyle</button>
+                <button class="admin-tab" data-tab="culture">Culture</button>
+                <button class="admin-tab" data-tab="adventure">Adventure</button>
+                <button class="admin-tab" data-tab="environment">Environment</button>
+                <button class="admin-tab" data-tab="photos">Photos</button>
+                <button class="admin-tab" data-tab="videos">Videos</button>
+                <button class="admin-tab" data-tab="views360">360° Views</button>
+                <button class="admin-tab" data-tab="art">Art</button>
+                <button class="admin-tab" data-tab="settings">Settings</button>
+            </div>
+            
+            <!-- Magazine Form -->
+            <form class="admin-form active" id="magazine-form">
+                <div class="form-group">
+                    <label for="magazine-title">Title</label>
+                    <input type="text" id="magazine-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="magazine-description">Description</label>
+                    <textarea id="magazine-description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="magazine-cover">Cover Image URL</label>
+                    <input type="text" id="magazine-cover" required>
+                </div>
+                <div class="form-group">
+                    <label for="magazine-date">Publication Date</label>
+                    <input type="date" id="magazine-date" required>
+                </div>
+                <div class="form-group">
+                    <label for="magazine-content">Content</label>
+                    <textarea id="magazine-content" required></textarea>
+                </div>
+                <button type="submit" class="admin-submit">Add Magazine Issue</button>
+                
+                <div class="content-list">
+                    <h3>Existing Magazine Issues</h3>
+                    <div class="content-items" id="magazine-items">
+                        <!-- Magazine items will be inserted here -->
+                    </div>
+                </div>
+            </form>
+            
+            <!-- Lifestyle Form -->
+            <form class="admin-form" id="lifestyle-form">
+                <div class="form-group">
+                    <label for="lifestyle-title">Title</label>
+                    <input type="text" id="lifestyle-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="lifestyle-description">Description</label>
+                    <textarea id="lifestyle-description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="lifestyle-image">Image URL</label>
+                    <input type="text" id="lifestyle-image" required>
+                </div>
+                <div class="form-group">
+                    <label for="lifestyle-content">Content</label>
+                    <textarea id="lifestyle-content" required></textarea>
+                </div>
+                <button type="submit" class="admin-submit">Add Lifestyle Content</button>
+                
+                <div class="content-list">
+                    <h3>Existing Lifestyle Content</h3>
+                    <div class="content-items" id="lifestyle-items">
+                        <!-- Lifestyle items will be inserted here -->
+                    </div>
+                </div>
+            </form>
+            
+            <!-- Culture Form -->
+            <form class="admin-form" id="culture-form">
+                <div class="form-group">
+                    <label for="culture-title">Title</label>
+                    <input type="text" id="culture-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="culture-description">Description</label>
+                    <textarea id="culture-description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="culture-image">Image URL</label>
+                    <input type="text" id="culture-image" required>
+                </div>
+                <div class="form-group">
+                    <label for="culture-content">Content</label>
+                    <textarea id="culture-content" required></textarea>
+                </div>
+                <button type="submit" class="admin-submit">Add Cultural Content</button>
+                
+                <div class="content-list">
+                    <h3>Existing Cultural Content</h3>
+                    <div class="content-items" id="culture-items">
+                        <!-- Culture items will be inserted here -->
+                    </div>
+                </div>
+            </form>
+            
+            <!-- Adventure Form -->
+            <form class="admin-form" id="adventure-form">
+                <div class="form-group">
+                    <label for="adventure-title">Title</label>
+                    <input type="text" id="adventure-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="adventure-description">Description</label>
+                    <textarea id="adventure-description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="adventure-image">Image URL</label>
+                    <input type="text" id="adventure-image" required>
+                </div>
+                <div class="form-group">
+                    <label for="adventure-content">Content</label>
+                    <textarea id="adventure-content" required></textarea>
+                </div>
+                <button type="submit" class="admin-submit">Add Adventure Content</button>
+                
+                <div class="content-list">
+                    <h3>Existing Adventure Content</h3>
+                    <div class="content-items" id="adventure-items">
+                        <!-- Adventure items will be inserted here -->
+                    </div>
+                </div>
+            </form>
+            
+            <!-- Environment Form -->
+            <form class="admin-form" id="environment-form">
+                <div class="form-group">
+                    <label for="environment-title">Title</label>
+                    <input type="text" id="environment-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="environment-description">Description</label>
+                    <textarea id="environment-description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="environment-image">Image URL</label>
+                    <input type="text" id="environment-image" required>
+                </div>
+                <div class="form-group">
+                    <label for="environment-content">Content</label>
+                    <textarea id="environment-content" required></textarea>
+                </div>
+                <button type="submit" class="admin-submit">Add Environment Content</button>
+                
+                <div class="content-list">
+                    <h3>Existing Environment Content</h3>
+                    <div class="content-items" id="environment-items">
+                        <!-- Environment items will be inserted here -->
+                    </div>
+                </div>
+            </form>
+            
+            <!-- Photos Form -->
+            <form class="admin-form" id="photos-form">
+                <div class="form-group">
+                    <label for="photo-title">Title</label>
+                    <input type="text" id="photo-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="photo-description">Description</label>
+                    <textarea id="photo-description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="photo-url">Image URL</label>
+                    <input type="text" id="photo-url" required>
+                </div>
+                <button type="submit" class="admin-submit">Add Photo</button>
+                
+                <div class="content-list">
+                    <h3>Existing Photos</h3>
+                    <div class="content-items" id="photo-items">
+                        <!-- Photo items will be inserted here -->
+                    </div>
+                </div>
+            </form>
+            
+            <!-- Videos Form -->
+            <form class="admin-form" id="videos-form">
+                <div class="form-group">
+                    <label for="video-title">Title</label>
+                    <input type="text" id="video-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="video-description">Description</label>
+                    <textarea id="video-description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="video-url">Video URL</label>
+                    <input type="text" id="video-url" required>
+                </div>
+                <div class="form-group">
+                    <label for="video-thumbnail">Thumbnail URL (Optional)</label>
+                    <input type="text" id="video-thumbnail">
+                </div>
+                <button type="submit" class="admin-submit">Add Video</button>
+                
+                <div class="content-list">
+                    <h3>Existing Videos</h3>
+                    <div class="content-items" id="video-items">
+                        <!-- Video items will be inserted here -->
+                    </div>
+                </div>
+            </form>
+            
+            <!-- 360 Views Form -->
+            <form class="admin-form" id="views360-form">
+                <div class="form-group">
+                    <label for="views360-title">Title</label>
+                    <input type="text" id="views360-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="views360-description">Description</label>
+                    <textarea id="views360-description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="views360-url">Image URL</label>
+                    <input type="text" id="views360-url" required>
+                </div>
+                <button type="submit" class="admin-submit">Add 360° View</button>
+                
+                <div class="content-list">
+                    <h3>Existing 360° Views</h3>
+                    <div class="content-items" id="views360-items">
+                        <!-- 360° View items will be inserted here -->
+                    </div>
+                </div>
+            </form>
+            
+            <!-- Art Form -->
+            <form class="admin-form" id="art-form">
+                <div class="form-group">
+                    <label for="art-title">Title</label>
+                    <input type="text" id="art-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="art-description">Description</label>
+                    <textarea id="art-description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="art-url">Image URL</label>
+                    <input type="text" id="art-url" required>
+                </div>
+                <button type="submit" class="admin-submit">Add Art</button>
+                
+                <div class="content-list">
+                    <h3>Existing Art</h3>
+                    <div class="content-items" id="art-items">
+                        <!-- Art items will be inserted here -->
+                    </div>
+                </div>
+            </form>
+
+            <!-- Settings Form -->
+            <form class="admin-form" id="settings-form">
+                <div class="form-group">
+                    <label for="admin-password-change">Change Admin Password</label>
+                    <input type="password" id="admin-password-change" placeholder="Enter new password">
+                </div>
+                <div class="form-group">
+                    <label for="admin-password-confirm">Confirm New Password</label>
+                    <input type="password" id="admin-password-confirm" placeholder="Confirm new password">
+                </div>
+                <button type="submit" class="admin-submit">Update Password</button>
+                <div class="password-change-message" id="password-change-message" style="display: none;"></div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Life in the Pahadi</h3>
+                    <p>My mountains, my identity</p>
+                    <p>Celebrating the spirit of mountain life through stories, images, and experiences.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="Home.html">Home</a></li>
+                        <li><a href="Mountain Life.html">Mountain Life</a></li>
+                        <li><a href="Gallery.html">Gallery</a></li>
+                        <li><a href="Admin.html">Admin</a></li>
+                        <li><a href="About Us.html">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li>Email: info@lifeinthepahadi.com</li>
+                        <li>Phone: +1 234 567 8900</li>
+                        <li>Address: Mountain View, Himalayan Foothills</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; <span id="current-year"></span> Life in the Pahadi. All rights reserved.</p>
+                <p>All content is original and created specifically for Life in the Pahadi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-to-top" id="scrollToTop">↑</button>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+   <!-- // <!-- Scroll to Top Button --> -->
+    <!-- //<!<button class="scroll-to-top" id="scrollToTop">↑</button> -->
+
+   <!-- // <!<script src="script.js"></script>--> -->
+    <!-- //<script> -->
+        <!-- // Admin page specific initialization -->
+      <!-- //  document.addEventListener('DOMContentLoaded', function() { -->
+            <!-- // Set current year in copyright -->
+            <!-- //document.getElementById('current-year').textContent = new Date().getFullYear(); -->
+            
+            <!-- // Initialize admin page with password protection -->
+           <!-- // initAdminPage(); -->
+        <!-- }); -->
+    <!-- //<!--</script>--!>// -->

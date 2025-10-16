@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life in the Pahadi | My mountains, my identity</title>
+    <meta name="description" content="Experience the beauty, culture, and traditions of mountain life through our monthly magazine">
+    <meta name="keywords" content="mountains, pahadi, culture, adventure, lifestyle, himalayas">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <h1>Life in the Pahadi</h1>
+                <div class="tagline">My mountains, my identity</div>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="Home.html">Home</a></li>
+                    <li><a href="Mountain Life.html">Mountain Life</a></li>
+                    <li><a href="Gallery.html">Gallery</a></li>
+                    <li><a href="Admin.html">Admin</a></li>
+					<li><a href="About Us.html">About Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section with Auto-Changing Background -->
+    <section class="hero" id="home">
+        <div class="hero-background" id="bg1"></div>
+        <div class="hero-background" id="bg2"></div>
+        <div class="hero-background" id="bg3"></div>
+        <div class="hero-background" id="bg4"></div>
+        <div class="hero-overlay">
+
+            <div class="hero-content">
+			
+                <h2>Discover the Soul of the Mountains</h2>
+                <p>Experience the beauty, culture, and traditions of mountain life through our monthly magazine</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Current Magazine Section -->
+    <section class="container">
+        <h2 class="section-title">Latest Magazine Issues</h2>
+        <div class="magazine-grid" id="magazine-container">
+            <div class="empty-state">
+                <h3>No Magazine Issues Yet</h3>
+                <p>Upload your first magazine issue using the Admin Panel</p>
+				<button onclick="readMore('photo1')">Read More</button>
+        <button onclick="likeItem('photo1')">❤️ Like</button>
+        <div class="interactions">
+          <span id="likes-photo1">❤️ 0</span>
+          <span id="views-photo1">👁️ 0</span>
+        </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Subscription Section -->
+    <section class="subscription">
+        <div class="container subscription-content">
+            <h2>Subscribe to Our Magazine</h2>
+            <p>Stay updated with the latest stories from the mountains</p>
+            <form class="subscription-form" id="subscribe-form">
+                <input type="email" placeholder="Enter your email address" required>
+                <button type="submit">Subscribe</button>
+            </form>
+            <div class="subscription-confirmation" id="subscriptionConfirmation">
+                Thank you for subscribing to Life in the Pahadi!
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Life in the Pahadi</h3>
+                    <p>My mountains, my identity</p>
+                    <p>Celebrating the spirit of mountain life through stories, images, and experiences.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="Home.html">Home</a></li>
+                        <li><a href="About Us.html">About Us</a></li>
+                        <li><a href="Mountain Life.html">Mountain Life</a></li>
+                        <li><a href="Gallery.html">Gallery</a></li>
+                        <li><a href="Admin.html">Admin</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li>Email: info@lifeinthepahadi.com</li>
+                        <li>Phone: +1 234 567 8900</li>
+                        <li>Address: Mountain View, Himalayan Foothills</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; <span id="current-year"></span> Life in the Pahadi. All rights reserved.</p>
+                <p>All content is original and created specifically for Life in the Pahadi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-to-top" id="scrollToTop">↑</button>
+
+    <!-- Modal for Content Viewing -->
+    <div class="modal" id="content-modal">
+        <div class="modal-content">
+            <button class="close-modal" id="close-modal">&times;</button>
+            <div class="modal-header">
+                <img id="modal-image" src="" alt="Content Image">
+                <div class="modal-header-overlay">
+                    <h2 id="modal-title">Content Title</h2>
+                    <div class="modal-meta" id="modal-meta"></div>
+                </div>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Content will be inserted here -->
+            </div>
+        </div>
+    </div>
+<!-- Videos Form -->
+<form class="admin-form" id="videos-form">
+    <div class="form-group">
+        <label for="video-title">Title</label>
+        <input type="text" id="video-title" required>
+    </div>
+    <div class="form-group">
+        <label for="video-description">Description</label>
+        <textarea id="video-description" required></textarea>
+    </div>
+    <div class="form-group">
+        <label for="video-url">Video URL</label>
+        <input type="text" id="video-url" required>
+    </div>
+    <div class="form-group">
+        <label for="video-thumbnail">Thumbnail URL (Optional)</label>
+        <input type="text" id="video-thumbnail">
+        <small>Provide a thumbnail image URL for better video preview</small>
+    </div>
+    <button type="submit" class="admin-submit">Add Video</button>
+</form>
+    <script src="script.js"></script>
+    <script>
+        // Home page specific initialization
+        document.addEventListener('DOMContentLoaded', function() {
+           // renderMagazines();
+            startBackgroundRotation();
+            
+            // Set current year in copyright
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+        });
+    </script>
+</body>
+</html>

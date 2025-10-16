@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery | Life in the Pahadi</title>
+    <meta name="description" content="Browse our collection of mountain photos, videos, 360° views and artwork">
+    <meta name="keywords" content="mountain gallery, photos, videos, 360 views, mountain art">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <h1>Life in the Pahadi</h1>
+                <div class="tagline">My mountains, my identity</div>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="Home.html">Home</a></li>
+                    <li><a href="Mountain Life.html">Mountain Life</a></li>
+                    <li><a href="Gallery.html">Gallery</a></li>
+                    <li><a href="Admin.html">Admin</a></li>
+                    <li><a href="About Us.html">About Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Rest of Gallery.html content remains the same -->
+    <!-- Gallery Section -->
+    <section class="container" id="gallery">
+        <h2 class="section-title">Photo & Video Gallery</h2>
+        <div class="gallery-tabs">
+            <button class="gallery-tab active" data-tab="photos">Photos</button>
+            <button class="gallery-tab" data-tab="videos">Videos</button>
+            <button class="gallery-tab" data-tab="views360">360° Views</button>
+            <button class="gallery-tab" data-tab="art">Mountain Art</button>
+        </div>
+		<!-- Add this to your HTML file -->
+<div id="gallery-lightbox" class="lightbox">
+    <div class="lightbox-content">
+        <span class="lightbox-close" id="lightbox-close">&times;</span>
+        
+        <!-- Media Container -->
+        <div class="lightbox-media-container">
+            <img id="lightbox-image" class="lightbox-media" style="display:none;">
+            <video id="lightbox-video" class="lightbox-media" style="display:none;" controls playsinline>
+                Your browser does not support the video tag.
+            </video>
+            <iframe id="lightbox-iframe" class="lightbox-media" style="display:none;" frameborder="0" allowfullscreen></iframe>
+        </div>
+        
+        <!-- Media Info -->
+        <div class="lightbox-info">
+            <h3 id="lightbox-title"></h3>
+            <p id="lightbox-description"></p>
+            <div id="lightbox-counter" class="lightbox-counter"></div>
+        </div>
+        
+        <!-- Navigation -->
+        <button class="lightbox-nav lightbox-prev" id="lightbox-prev">&#10094;</button>
+        <button class="lightbox-nav lightbox-next" id="lightbox-next">&#10095;</button>
+    </div>
+</div>
+        
+        <div class="gallery-content active" id="photos-content">
+            <div class="photo-grid" id="photos-grid">
+                <div class="empty-state">
+                    <h3>No Photos Yet</h3>
+                    <p>Upload photos using the Admin Panel</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="gallery-content" id="videos-content">
+            <div class="photo-grid" id="videos-grid">
+                <div class="empty-state">
+                    <h3>No Videos Yet</h3>
+                    <p>Upload videos using the Admin Panel</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="gallery-content" id="views360-content">
+            <div class="photo-grid" id="views360-grid">
+                <div class="empty-state">
+                    <h3>No 360° Views Yet</h3>
+                    <p>Upload 360° views using the Admin Panel</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="gallery-content" id="art-content">
+            <div class="photo-grid" id="art-grid">
+                <div class="empty-state">
+                    <h3>No Mountain Art Yet</h3>
+                    <p>Upload mountain art using the Admin Panel</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Life in the Pahadi</h3>
+                    <p>My mountains, my identity</p>
+                    <p>Celebrating the spirit of mountain life through stories, images, and experiences.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="Home.html">Home</a></li>
+                        <li><a href="Mountain Life.html">Mountain Life</a></li>
+                        <li><a href="Gallery.html">Gallery</a></li>
+                        <li><a href="Admin.html">Admin</a></li>
+                        <li><a href="About Us.html">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li>Email: info@lifeinthepahadi.com</li>
+                        <li>Phone: +1 234 567 8900</li>
+                        <li>Address: Mountain View, Himalayan Foothills</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; <span id="current-year"></span> Life in the Pahadi. All rights reserved.</p>
+                <p>All content is original and created specifically for Life in the Pahadi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-to-top" id="scrollToTop">↑</button>
+
+    <script src="script.js"></script>
+    <script>
+        // Gallery page specific initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            initGalleryPage();
+            
+            // Set current year in copyright
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+        });
+    </script>
+</body>
+</html>
