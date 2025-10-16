@@ -1743,3 +1743,24 @@ footer {
   object-fit: cover; /* ensures aspect ratio cropping */
   display: block;
 }
+.magazine-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 15px auto;
+  max-width: 600px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.magazine-card img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.no-data, .error {
+  text-align: center;
+  color: #333;
+  font-size: 1.2rem;
+}
+
