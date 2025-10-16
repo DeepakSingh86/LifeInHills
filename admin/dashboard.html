@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Admin Dashboard - Mountain Life</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <main class="container admin-page">
+    <h2>Admin Dashboard</h2>
+
+    <section class="card">
+      <h3>Create / Update Article</h3>
+      <form id="postForm">
+        <label>Title<input id="title" required></label>
+        <label>Summary<input id="summary" required></label>
+        <label>Image URL (optional)<input id="image" placeholder="Or upload using the file input"></label>
+        <label>Upload Image<input type="file" id="file" accept="image/*"></label>
+        <label>Author<input id="author"></label>
+        <label>Date<input id="date" type="date"></label>
+        <label>Category
+          <select id="category">
+            <option value="">-- choose --</option>
+            <option value="mountain">Mountain</option>
+            <option value="culture">Culture</option>
+            <option value="travel">Travel</option>
+          </select>
+        </label>
+        <label>Content<textarea id="content" rows="8" required></textarea></label>
+        <label>Article ID (leave blank for new)<input id="id"></label>
+
+        <label>Google Sheet ID (optional for logging)<input id="sheetId" placeholder="Sheet ID"></label>
+
+        <button type="submit">Save (Upload)</button>
+      </form>
+      <p class="muted">Security: This page works with a serverless backend. Set API_BASE and UPLOAD_ENDPOINT in admin/js/admin-dashboard.js.</p>
+    </section>
+
+    <section class="card" id="status"></section>
+  </main>
+
+  <script src="js/admin-dashboard.js"></script>
+</body>
+</html>
