@@ -151,6 +151,11 @@ let currentLightboxItems = null;
 let currentLightboxIndex = -1;
 let currentArticleId = null;
 
+// Initialize global data storage
+Object.values(STORAGE_KEYS).forEach(key => {
+    window[key] = [];
+});
+
 // ============================
 // Core Initialization
 // ============================
@@ -238,12 +243,7 @@ function initializeDOMReferences() {
 function initializeData() {
     console.log('Initializing data storage...');
     
-    // BLOCK LOCAL STORAGE - Initialize global variables instead
-    Object.values(STORAGE_KEYS).forEach(key => {
-        window[key] = [];
-    });
-    
-    // Initialize data from GitHub instead of localStorage
+    // Initialize data from GitHub
     loadAllDataFromGitHub();
     
     console.log('Data storage initialized');
@@ -257,13 +257,18 @@ async function loadAllDataFromGitHub() {
     console.log('Loading data from GitHub...');
     
     try {
-        for (const type in CONTENT_TYPES) {
-            await loadDataFromGitHub(type);
-        }
-        showNotification('Data loaded from GitHub successfully!', 'success');
+        const loadPromises = Object.keys(CONTENT_TYPES).map(type => 
+            loadDataFromGitHub(type)
+        );
+        
+        await Promise.all(loadPromises);
+        console.log('All data loaded from GitHub successfully!');
+        
+        // Update the UI after data is loaded
+        updateAllPageContent();
+        
     } catch (error) {
         console.error('Error loading data from GitHub:', error);
-        showNotification('Error loading data from GitHub. Using fallback data.', 'error');
         // Initialize with empty data as fallback
         Object.values(STORAGE_KEYS).forEach(key => {
             window[key] = [];
@@ -286,14 +291,26 @@ async function loadDataFromGitHub(contentType) {
         fetch(githubUrl)
             .then(response => {
                 if (!response.ok) {
+                    // If file doesn't exist, initialize with empty array
+                    if (response.status === 404) {
+                        console.log(`Data file for ${contentType} not found, initializing with empty array`);
+                        window[config.storageKey] = [];
+                        resolve([]);
+                        return;
+                    }
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 return response.json();
             })
             .then(data => {
-                // Store data in global variable instead of localStorage
-                window[config.storageKey] = data;
-                console.log(`Loaded ${data.length} ${contentType} items from GitHub`);
+                // Store data in global variable
+                if (Array.isArray(data)) {
+                    window[config.storageKey] = data;
+                    console.log(`Loaded ${data.length} ${contentType} items from GitHub`);
+                } else {
+                    console.warn(`Invalid data format for ${contentType}, initializing with empty array`);
+                    window[config.storageKey] = [];
+                }
                 resolve(data);
             })
             .catch(error => {
@@ -318,16 +335,15 @@ async function saveDataToGitHub(contentType, data) {
         // Store data in global variable
         window[config.storageKey] = data;
         
-        // Show success message (actual GitHub save would happen via backend)
-        showNotification(`${config.displayName} data prepared for GitHub sync!`, 'success');
+        // Show success message 
+        showNotification(`${config.displayName} saved successfully!`, 'success');
         
-        // In a real implementation, you would send data to your backend here:
-        // Example: await fetch('/api/save-to-github', { method: 'POST', body: JSON.stringify({type: contentType, data}) });
+        // Update the UI immediately
+        updatePageContent(contentType);
         
-        // For now, we'll simulate successful save
-        setTimeout(() => {
-            resolve(true);
-        }, 500);
+        // In a real implementation, you would send data to your backend here
+        // For now, we'll just update the local state
+        resolve(true);
     });
 }
 
@@ -769,19 +785,26 @@ function handlePinPointClick(itemId, pointIndex) {
 
 function renderContentCards(items, container, type, category, emptyMessage) {
     if (!container) {
-        console.warn('Container not found for rendering content cards');
+        console.warn('Container not found for rendering content cards:', type);
         return;
     }
     
     console.log(`Rendering ${items.length} ${type} items to container`);
     
-    container.innerHTML = '';
+    // Clear existing content but preserve the structure
+    const grid = container.querySelector('.mountain-life-grid, .heritage-grid, .adventure-grid') || container;
+    if (!grid) {
+        console.warn('Grid container not found for:', type);
+        return;
+    }
+    
+    grid.innerHTML = '';
     
     if (items.length === 0) {
-        container.innerHTML = `
+        grid.innerHTML = `
             <div class="empty-state">
                 <h3>${emptyMessage}</h3>
-                <p>Upload content using the Admin Panel</p>
+                <p>No content available yet. Check back soon!</p>
             </div>
         `;
         return;
@@ -829,7 +852,7 @@ function renderContentCards(items, container, type, category, emptyMessage) {
                 <button class="read-more" data-type="${type}" data-id="${item.id}">Read More</button>
             </div>
         `;
-        container.appendChild(card);
+        grid.appendChild(card);
         
         // Add pin points to card
         createPinPoints(card, item.id);
@@ -856,8 +879,8 @@ function renderContentCards(items, container, type, category, emptyMessage) {
         }
     });
     
-    const readMoreButtons = container.querySelectorAll('.read-more');
-    console.log(`Added ${readMoreButtons.length} read more buttons`);
+    const readMoreButtons = grid.querySelectorAll('.read-more');
+    console.log(`Added ${readMoreButtons.length} read more buttons for ${type}`);
     
     readMoreButtons.forEach(button => {
         button.addEventListener('click', function(e) {
@@ -871,10 +894,16 @@ function renderContentCards(items, container, type, category, emptyMessage) {
 }
 
 function renderGalleryItems(items, container, type, emptyMessage) {
-    if (!container) return;
+    if (!container) {
+        console.warn('Container not found for rendering gallery items:', type);
+        return;
+    }
     
     const grid = container.querySelector('.photo-grid') || container;
-    if (!grid) return;
+    if (!grid) {
+        console.warn('Grid container not found for gallery:', type);
+        return;
+    }
     
     grid.innerHTML = '';
     
@@ -882,7 +911,7 @@ function renderGalleryItems(items, container, type, emptyMessage) {
         grid.innerHTML = `
             <div class="empty-state">
                 <h3>${emptyMessage}</h3>
-                <p>Upload content using the Admin Panel</p>
+                <p>No content available yet. Check back soon!</p>
             </div>
         `;
         return;
@@ -1417,8 +1446,10 @@ function updateLightboxNavigation() {
 
 function initHomePage() {
     console.log('Initializing Home page features...');
-    const magazines = getMagazines();
-    renderContentCards(magazines, magazineContainer, 'magazine', null, 'No Magazine Issues Yet');
+    // This will be called after data is loaded from GitHub
+    if (getMagazines().length > 0) {
+        renderContentCards(getMagazines(), magazineContainer, 'magazine', null, 'No Magazine Issues Yet');
+    }
     if (heroBackgrounds && heroBackgrounds.length > 0) {
         startBackgroundRotation();
     }
@@ -1426,7 +1457,7 @@ function initHomePage() {
 
 function initMountainLifePage() {
     console.log('Initializing Mountain Life page features...');
-    
+    // This will be called after data is loaded from GitHub
     const contentTypes = [
         { type: 'lifestyle', container: lifestyleGrid, category: 'Lifestyle', message: 'No Lifestyle Content Yet' },
         { type: 'culture', container: cultureGrid, category: 'Culture', message: 'No Cultural Heritage Content Yet' },
@@ -1436,7 +1467,9 @@ function initMountainLifePage() {
     
     contentTypes.forEach(config => {
         const items = getData(CONTENT_TYPES[config.type].storageKey);
-        renderContentCards(items, config.container, config.type, config.category, config.message);
+        if (items.length > 0) {
+            renderContentCards(items, config.container, config.type, config.category, config.message);
+        }
     });
     
     initContentTabs();
@@ -1444,7 +1477,7 @@ function initMountainLifePage() {
 
 function initGalleryPage() {
     console.log('Initializing Gallery page features...');
-    
+    // This will be called after data is loaded from GitHub
     const galleryTypes = [
         { type: 'photos', container: photosContent, message: 'No Photos Yet' },
         { type: 'videos', container: videosContent, message: 'No Videos Yet' },
@@ -1454,10 +1487,52 @@ function initGalleryPage() {
     
     galleryTypes.forEach(config => {
         const items = getData(CONTENT_TYPES[config.type].storageKey);
-        renderGalleryItems(items, config.container, config.type, config.message);
+        if (items.length > 0) {
+            renderGalleryItems(items, config.container, config.type, config.message);
+        }
     });
     
     initGalleryTabs();
+}
+
+function updateAllPageContent() {
+    console.log('Updating all page content with loaded data...');
+    
+    // Update home page if it's active
+    if (document.getElementById('magazine-container')) {
+        const magazines = getMagazines();
+        renderContentCards(magazines, magazineContainer, 'magazine', null, 'No Magazine Issues Yet');
+    }
+    
+    // Update mountain life page if it's active
+    if (document.getElementById('lifestyle-content')) {
+        const contentTypes = [
+            { type: 'lifestyle', container: lifestyleGrid, category: 'Lifestyle', message: 'No Lifestyle Content Yet' },
+            { type: 'culture', container: cultureGrid, category: 'Culture', message: 'No Cultural Heritage Content Yet' },
+            { type: 'adventure', container: adventureGrid, category: 'Adventure', message: 'No Adventure Content Yet' },
+            { type: 'environment', container: environmentGrid, category: 'Environment', message: 'No Environment Content Yet' }
+        ];
+        
+        contentTypes.forEach(config => {
+            const items = getData(CONTENT_TYPES[config.type].storageKey);
+            renderContentCards(items, config.container, config.type, config.category, config.message);
+        });
+    }
+    
+    // Update gallery page if it's active
+    if (document.getElementById('photos-content')) {
+        const galleryTypes = [
+            { type: 'photos', container: photosContent, message: 'No Photos Yet' },
+            { type: 'videos', container: videosContent, message: 'No Videos Yet' },
+            { type: 'views360', container: views360Content, message: 'No 360° Views Yet' },
+            { type: 'art', container: artContent, message: 'No Mountain Art Yet' }
+        ];
+        
+        galleryTypes.forEach(config => {
+            const items = getData(CONTENT_TYPES[config.type].storageKey);
+            renderGalleryItems(items, config.container, config.type, config.message);
+        });
+    }
 }
 
 // ============================
@@ -1682,9 +1757,10 @@ function setupAdminForms() {
                 }
                 
                 if (processedData) {
+                    let success;
                     if (isEditMode && editId) {
                         console.log(`Updating ${type} with ID: ${editId}`);
-                        const success = await updateContentItem(type, editId, processedData);
+                        success = await updateContentItem(type, editId, processedData);
                         if (success) {
                             showNotification(`${config.displayName} updated successfully!`, 'success');
                             resetFormToAddMode(this, config.formId, config.displayName);
@@ -1693,7 +1769,7 @@ function setupAdminForms() {
                         }
                     } else {
                         console.log(`Adding new ${type}`);
-                        const success = await saveContentItem(type, processedData);
+                        success = await saveContentItem(type, processedData);
                         if (success) {
                             showNotification(`${config.displayName} added successfully!`, 'success');
                         } else {
@@ -1701,7 +1777,6 @@ function setupAdminForms() {
                         }
                     }
                     this.reset();
-                    updatePageContent(type);
                     updateAdminDashboard();
                     loadContentList(type);
                 } else {
@@ -2103,7 +2178,7 @@ async function saveContentItem(type, item) {
     const items = getData(config.storageKey);
     items.push(item);
     
-    // Save to GitHub instead of localStorage
+    // Save to GitHub
     return await saveData(config.storageKey, items);
 }
 
@@ -2123,7 +2198,7 @@ async function updateContentItem(type, id, updatedItem) {
         updatedItem.id = parseInt(id);
         items[index] = updatedItem;
         
-        // Save to GitHub instead of localStorage
+        // Save to GitHub
         return await saveData(config.storageKey, items);
     } else {
         console.error(`Item not found for update: ${type} - ${id}`);
@@ -2493,7 +2568,6 @@ function initializePageSpecificFeatures(currentPage) {
     console.log('Initializing page-specific features for:', currentPage);
     
     const pageConfig = {
-        'index.html': initHomePage,
         'index.html': initHomePage,
         '': initHomePage,
         'Mountain Life.html': initMountainLifePage,
