@@ -1,139 +1,402 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Admin Panel | Life in the Pahadi</title>
-  <style>
-    /* Simple, clean styles for the login card */
-    :root{
-      --accent:#0b4f77;
-      --accent-2:#2f8a3d;
-      --muted:#6c7a88;
-      --bg:#f3f8f2;
-    }
-    html,body{height:100%;margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);}
-    header{background:linear-gradient(90deg,var(--accent) 0%, rgba(47,138,61,0.95) 100%);padding:18px 28px;color:#fff;}
-    header h1{margin:0;font-size:28px;}
-    main{min-height:calc(100vh - 78px);display:flex;align-items:center;justify-content:center;padding:40px;}
-    .card{background:#fff;padding:34px;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,0.08);max-width:520px;width:100%;}
-    .card h2{text-align:center;color:var(--accent);margin:0 0 10px;font-size:22px;}
-    .card p.lead{text-align:center;color:var(--muted);margin:0 0 18px;}
-    form{display:flex;flex-direction:column;gap:12px;}
-    .form-row{display:flex;flex-direction:column;gap:6px;}
-    label{font-size:13px;color:#334;}
-    input[type="password"]{padding:12px 14px;border:2px solid #d6e0df;border-radius:8px;font-size:15px;outline:none;}
-    input[type="password"]:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(11,79,119,0.08);}
-    .btn{display:inline-block;background:var(--accent);color:#fff;padding:12px 18px;border-radius:8px;border:none;cursor:pointer;font-size:15px;}
-    .btn:active{transform:translateY(1px);}
-    .hint{font-size:12px;color:var(--muted);}
-    .error{color:#b32e2e;background:#ffecec;padding:8px 10px;border-radius:6px;font-size:13px;border:1px solid #f2c2c2;}
-    .success{color:green;background:#ecfff0;padding:8px 10px;border-radius:6px;font-size:13px;border:1px solid #c8f0d0;}
-    .footer-note{margin-top:12px;font-size:12px;color:var(--muted);text-align:center;}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Life in the Pahadi</title>
+    <meta name="description" content="Admin panel for managing Life in the Pahadi magazine content">
+    <meta name="keywords" content="admin, content management, upload, magazine">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>Life in the Pahadi</h1>
-  </header>
-
-  <main>
-    <div class="card" role="main" aria-labelledby="login-heading">
-      <h2 id="login-heading">Admin Access Required</h2>
-      <p class="lead">Enter Admin Password</p>
-
-      <form id="admin-login-form" autocomplete="off" novalidate>
-        <div id="message" aria-live="polite"></div>
-
-        <div class="form-row">
-          <label for="admin-password">Password</label>
-          <input id="admin-password" name="admin-password" type="password" placeholder="Enter password to access admin panel" aria-required="true" />
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <h1>Life in the Pahadi</h1>
+                <div class="tagline">My mountains, my identity</div>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="Home.html">Home</a></li>
+                    <li><a href="Mountain Life.html">Mountain Life</a></li>
+                    <li><a href="Gallery.html">Gallery</a></li>
+                    <li><a href="Admin.html">Admin</a></li>
+                    <li><a href="About Us.html">About Us</a></li>
+                </ul>
+            </nav>
         </div>
+    </header>
 
-        <div style="display:flex;gap:10px;align-items:center;justify-content:center;margin-top:8px;">
-          <button id="access-btn" class="btn" type="submit">Access Admin Panel</button>
+    <!-- Password Protection Section (Visible by default) -->
+    <section class="container" id="password-section">
+        <div class="admin-login">
+            <h2 class="section-title">Admin Access Required</h2>
+            <div class="login-form-container">
+                <form id="admin-login-form">
+                    <div class="form-group">
+                        <label for="admin-password">Enter Admin Password</label>
+                        <input type="password" id="admin-password" required placeholder="Enter password to access admin panel">
+                        <small>Default password: pahadi2024</small>
+                    </div>
+                    <button type="submit" class="admin-submit">Access Admin Panel</button>
+                    <div class="login-error" id="login-error" style="display: none;">
+                        Invalid password. Please try again.
+                    </div>
+                </form>
+            </div>
         </div>
+    </section>
 
-        <div class="footer-note">
-          <div class="hint">Default password (if not changed): <strong>pahadi2024</strong></div>
+    <!-- Admin Panel Section (Hidden until authenticated) -->
+    <section class="container" id="admin-panel-section" style="display: none;">
+        <h2 class="section-title">Admin Panel</h2>
+        <div class="admin-panel">
+            <div class="admin-header">
+                <div class="admin-welcome">
+                    <h3>Welcome, Administrator</h3>
+                    <button id="logout-btn" class="logout-btn">Logout</button>
+                </div>
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <span class="stat-number" id="magazines-count">0</span>
+                        <span class="stat-label">Magazine Issues</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="content-count">0</span>
+                        <span class="stat-label">Content Items</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="media-count">0</span>
+                        <span class="stat-label">Media Files</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="subscribers-count">0</span>
+                        <span class="stat-label">Subscribers</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="admin-tabs">
+                <button class="admin-tab active" data-tab="magazine">Magazine</button>
+                <button class="admin-tab" data-tab="lifestyle">Lifestyle</button>
+                <button class="admin-tab" data-tab="culture">Culture</button>
+                <button class="admin-tab" data-tab="adventure">Adventure</button>
+                <button class="admin-tab" data-tab="environment">Environment</button>
+                <button class="admin-tab" data-tab="photos">Photos</button>
+                <button class="admin-tab" data-tab="videos">Videos</button>
+                <button class="admin-tab" data-tab="views360">360° Views</button>
+                <button class="admin-tab" data-tab="art">Art</button>
+                <button class="admin-tab" data-tab="settings">Settings</button>
+            </div>
+            
+            <!-- Magazine Form -->
+            <form class="admin-form active" id="magazine-form">
+                <div class="form-group">
+                    <label for="magazine-title">Title</label>
+                    <input type="text" id="magazine-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="magazine-description">Description</label>
+                    <textarea id="magazine-description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="magazine-cover">Cover Image URL</label>
+                    <input type="text" id="magazine-cover" required>
+                </div>
+                <div class="form-group">
+                    <label for="magazine-date">Publication Date</label>
+                    <input type="date" id="magazine-date" required>
+                </div>
+                <div class="form-group">
+                    <label for="magazine-content">Content</label>
+                    <textarea id="magazine-content" required></textarea>
+                </div>
+                <button type="submit" class="admin-submit">Add Magazine Issue</button>
+                
+                <div class="content-list">
+                    <h3>Existing Magazine Issues</h3>
+                    <div class="content-items" id="magazine-items">
+                        <!-- Magazine items will be inserted here -->
+                    </div>
+                </div>
+            </form>
+            
+            <!-- Lifestyle Form -->
+            <form class="admin-form" id="lifestyle-form">
+                <div class="form-group">
+                    <label for="lifestyle-title">Title</label>
+                    <input type="text" id="lifestyle-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="lifestyle-description">Description</label>
+                    <textarea id="lifestyle-description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="lifestyle-image">Image URL</label>
+                    <input type="text" id="lifestyle-image" required>
+                </div>
+                <div class="form-group">
+                    <label for="lifestyle-content">Content</label>
+                    <textarea id="lifestyle-content" required></textarea>
+                </div>
+                <button type="submit" class="admin-submit">Add Lifestyle Content</button>
+                
+                <div class="content-list">
+                    <h3>Existing Lifestyle Content</h3>
+                    <div class="content-items" id="lifestyle-items">
+                        <!-- Lifestyle items will be inserted here -->
+                    </div>
+                </div>
+            </form>
+            
+            <!-- Culture Form -->
+            <form class="admin-form" id="culture-form">
+                <div class="form-group">
+                    <label for="culture-title">Title</label>
+                    <input type="text" id="culture-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="culture-description">Description</label>
+                    <textarea id="culture-description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="culture-image">Image URL</label>
+                    <input type="text" id="culture-image" required>
+                </div>
+                <div class="form-group">
+                    <label for="culture-content">Content</label>
+                    <textarea id="culture-content" required></textarea>
+                </div>
+                <button type="submit" class="admin-submit">Add Cultural Content</button>
+                
+                <div class="content-list">
+                    <h3>Existing Cultural Content</h3>
+                    <div class="content-items" id="culture-items">
+                        <!-- Culture items will be inserted here -->
+                    </div>
+                </div>
+            </form>
+            
+            <!-- Adventure Form -->
+            <form class="admin-form" id="adventure-form">
+                <div class="form-group">
+                    <label for="adventure-title">Title</label>
+                    <input type="text" id="adventure-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="adventure-description">Description</label>
+                    <textarea id="adventure-description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="adventure-image">Image URL</label>
+                    <input type="text" id="adventure-image" required>
+                </div>
+                <div class="form-group">
+                    <label for="adventure-content">Content</label>
+                    <textarea id="adventure-content" required></textarea>
+                </div>
+                <button type="submit" class="admin-submit">Add Adventure Content</button>
+                
+                <div class="content-list">
+                    <h3>Existing Adventure Content</h3>
+                    <div class="content-items" id="adventure-items">
+                        <!-- Adventure items will be inserted here -->
+                    </div>
+                </div>
+            </form>
+            
+            <!-- Environment Form -->
+            <form class="admin-form" id="environment-form">
+                <div class="form-group">
+                    <label for="environment-title">Title</label>
+                    <input type="text" id="environment-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="environment-description">Description</label>
+                    <textarea id="environment-description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="environment-image">Image URL</label>
+                    <input type="text" id="environment-image" required>
+                </div>
+                <div class="form-group">
+                    <label for="environment-content">Content</label>
+                    <textarea id="environment-content" required></textarea>
+                </div>
+                <button type="submit" class="admin-submit">Add Environment Content</button>
+                
+                <div class="content-list">
+                    <h3>Existing Environment Content</h3>
+                    <div class="content-items" id="environment-items">
+                        <!-- Environment items will be inserted here -->
+                    </div>
+                </div>
+            </form>
+            
+            <!-- Photos Form -->
+            <form class="admin-form" id="photos-form">
+                <div class="form-group">
+                    <label for="photo-title">Title</label>
+                    <input type="text" id="photo-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="photo-description">Description</label>
+                    <textarea id="photo-description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="photo-url">Image URL</label>
+                    <input type="text" id="photo-url" required>
+                </div>
+                <button type="submit" class="admin-submit">Add Photo</button>
+                
+                <div class="content-list">
+                    <h3>Existing Photos</h3>
+                    <div class="content-items" id="photo-items">
+                        <!-- Photo items will be inserted here -->
+                    </div>
+                </div>
+            </form>
+            
+            <!-- Videos Form -->
+            <form class="admin-form" id="videos-form">
+                <div class="form-group">
+                    <label for="video-title">Title</label>
+                    <input type="text" id="video-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="video-description">Description</label>
+                    <textarea id="video-description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="video-url">Video URL</label>
+                    <input type="text" id="video-url" required>
+                </div>
+                <div class="form-group">
+                    <label for="video-thumbnail">Thumbnail URL (Optional)</label>
+                    <input type="text" id="video-thumbnail">
+                </div>
+                <button type="submit" class="admin-submit">Add Video</button>
+                
+                <div class="content-list">
+                    <h3>Existing Videos</h3>
+                    <div class="content-items" id="video-items">
+                        <!-- Video items will be inserted here -->
+                    </div>
+                </div>
+            </form>
+            
+            <!-- 360 Views Form -->
+            <form class="admin-form" id="views360-form">
+                <div class="form-group">
+                    <label for="views360-title">Title</label>
+                    <input type="text" id="views360-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="views360-description">Description</label>
+                    <textarea id="views360-description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="views360-url">Image URL</label>
+                    <input type="text" id="views360-url" required>
+                </div>
+                <button type="submit" class="admin-submit">Add 360° View</button>
+                
+                <div class="content-list">
+                    <h3>Existing 360° Views</h3>
+                    <div class="content-items" id="views360-items">
+                        <!-- 360° View items will be inserted here -->
+                    </div>
+                </div>
+            </form>
+            
+            <!-- Art Form -->
+            <form class="admin-form" id="art-form">
+                <div class="form-group">
+                    <label for="art-title">Title</label>
+                    <input type="text" id="art-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="art-description">Description</label>
+                    <textarea id="art-description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="art-url">Image URL</label>
+                    <input type="text" id="art-url" required>
+                </div>
+                <button type="submit" class="admin-submit">Add Art</button>
+                
+                <div class="content-list">
+                    <h3>Existing Art</h3>
+                    <div class="content-items" id="art-items">
+                        <!-- Art items will be inserted here -->
+                    </div>
+                </div>
+            </form>
+
+            <!-- Settings Form -->
+            <form class="admin-form" id="settings-form">
+                <div class="form-group">
+                    <label for="admin-password-change">Change Admin Password</label>
+                    <input type="password" id="admin-password-change" placeholder="Enter new password">
+                </div>
+                <div class="form-group">
+                    <label for="admin-password-confirm">Confirm New Password</label>
+                    <input type="password" id="admin-password-confirm" placeholder="Confirm new password">
+                </div>
+                <button type="submit" class="admin-submit">Update Password</button>
+                <div class="password-change-message" id="password-change-message" style="display: none;"></div>
+            </form>
         </div>
-      </form>
-    </div>
-  </main>
+    </section>
 
-  <script>
-    (function(){
-      // Keys and default — keep these aligned with your main script if used elsewhere
-      const ADMIN_PASSWORD_KEY = 'life_in_pahadi_admin_password';
-      const DEFAULT_PASSWORD = 'pahadi2024';
-      const ADMIN_PANEL_PATH = 'admin/index.html'; // redirect path (case-sensitive)
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Life in the Pahadi</h3>
+                    <p>My mountains, my identity</p>
+                    <p>Celebrating the spirit of mountain life through stories, images, and experiences.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="Home.html">Home</a></li>
+                        <li><a href="Mountain Life.html">Mountain Life</a></li>
+                        <li><a href="Gallery.html">Gallery</a></li>
+                        <li><a href="Admin.html">Admin</a></li>
+                        <li><a href="About Us.html">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li>Email: info@lifeinthepahadi.com</li>
+                        <li>Phone: +1 234 567 8900</li>
+                        <li>Address: Mountain View, Himalayan Foothills</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; <span id="current-year"></span> Life in the Pahadi. All rights reserved.</p>
+                <p>All content is original and created specifically for Life in the Pahadi.</p>
+            </div>
+        </div>
+    </footer>
 
-      const form = document.getElementById('admin-login-form');
-      const input = document.getElementById('admin-password');
-      const messageBox = document.getElementById('message');
+    <!-- Scroll to Top Button -->
+    <button class="scroll-to-top" id="scrollToTop">↑</button>
 
-      // If already authenticated, redirect immediately
-      if (sessionStorage.getItem('admin_authenticated') === 'true') {
-        try { window.location.href = ADMIN_PANEL_PATH; } catch(e){ /* ignore */ }
-      }
-
-      function showMessage(text, type) {
-        if (!messageBox) return;
-        messageBox.innerHTML = '<div class="' + (type === 'error' ? 'error' : 'success') + '">' + text + '</div>';
-      }
-
-      function clearMessage() {
-        if (messageBox) messageBox.innerHTML = '';
-      }
-
-      function getStoredPassword() {
-        try {
-          const p = localStorage.getItem(ADMIN_PASSWORD_KEY);
-          return p ? p : DEFAULT_PASSWORD;
-        } catch (e) {
-          return DEFAULT_PASSWORD;
-        }
-      }
-
-      // Submit handler
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        clearMessage();
-
-        const entered = input.value ? input.value.trim() : '';
-
-        if (!entered) {
-          showMessage('Please enter the admin password.', 'error');
-          input.focus();
-          return;
-        }
-
-        const correct = getStoredPassword();
-
-        // Case-sensitive or not? we use exact match but you can change to lower-case compare if prefer
-        if (entered === correct) {
-          // mark authenticated for this session
-          sessionStorage.setItem('admin_authenticated', 'true');
-          showMessage('Access granted. Redirecting...', 'success');
-
-          // small delay to show message then redirect
-          setTimeout(() => {
-            window.location.href = ADMIN_PANEL_PATH;
-          }, 700);
-        } else {
-          showMessage('Incorrect password. Please try again.', 'error');
-
-          // Optional: clear input to avoid copy-paste errors
-          input.value = '';
-          input.focus();
-        }
-      });
-
-      // Allow Enter to submit and clear error on input
-      input.addEventListener('input', function(){
-        clearMessage();
-      });
-    })();
-  </script>
+    <script src="script.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
