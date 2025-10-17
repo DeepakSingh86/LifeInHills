@@ -18,7 +18,6 @@ const STORAGE_KEYS = {
 
 const ADMIN_PASSWORD_KEY = 'life_in_pahadi_admin_password';
 const DEFAULT_PASSWORD = 'pahadi2024';
-const GITHUB_TOKEN='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';
 
 // GitHub Configuration
 const GITHUB_CONFIG = {
@@ -166,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeDOMReferences();
     initializeData();
     initializeCommonFeatures();
-    loadAllContentLists();
+    
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     console.log('Current page:', currentPage);
     initializePageSpecificFeatures(currentPage);
@@ -323,81 +322,30 @@ async function loadDataFromGitHub(contentType) {
     });
 }
 
-// async function saveDataToGitHub(contentType, data) {
-    // return new Promise((resolve, reject) => {
-        // console.log(`Saving ${contentType} data to GitHub...`);
-        
-        // const config = CONTENT_TYPES[contentType];
-        // if (!config) {
-            // reject(new Error(`Config not found for type: ${contentType}`));
-            // return;
-        // }
-        
-        // // Store data in global variable
-        // window[config.storageKey] = data;
-        
-        // // Show success message 
-        // showNotification(`${config.displayName} saved successfully!`, 'success');
-        
-        // // Update the UI immediately
-        // updatePageContent(contentType);
-        
-        // // In a real implementation, you would send data to your backend here
-        // // For now, we'll just update the local state
-        // resolve(true);
-    // });
-// }
-
 async function saveDataToGitHub(contentType, data) {
-    const config = CONTENT_TYPES[contentType];
-    if (!config) throw new Error(`Config not found for ${contentType}`);
-
-    const githubUrl = `https://api.github.com/repos/${GITHUB_CONFIG.REPO_OWNER}/${GITHUB_CONFIG.REPO_NAME}/contents/${GITHUB_CONFIG.DATA_PATH}/${config.githubFile}`;
-    const message = `Update ${config.githubFile}`;
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-
-    // Step 1️⃣: Get current file SHA (needed for updates)
-    let sha = null;
-    try {
-        const existing = await fetch(githubUrl, {
-            headers: { "Authorization": `token ${GITHUB_TOKEN}` }
-        });
-        if (existing.ok) {
-            const json = await existing.json();
-            sha = json.sha;
-            console.log("Existing file SHA found:", sha);
-        } else {
-            console.log("File not found, will create new one");
+    return new Promise((resolve, reject) => {
+        console.log(`Saving ${contentType} data to GitHub...`);
+        
+        const config = CONTENT_TYPES[contentType];
+        if (!config) {
+            reject(new Error(`Config not found for type: ${contentType}`));
+            return;
         }
-    } catch (err) {
-        console.warn("Error checking existing file:", err);
-    }
-
-    // Step 2️⃣: Create or update the file
-    const bodyData = { message, content, branch: GITHUB_CONFIG.BRANCH };
-    if (sha) bodyData.sha = sha;
-
-    const response = await fetch(githubUrl, {
-        method: "PUT",
-        headers: {
-            "Authorization": `token ${GITHUB_TOKEN}`,
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(bodyData)
+        
+        // Store data in global variable
+        window[config.storageKey] = data;
+        
+        // Show success message 
+        showNotification(`${config.displayName} saved successfully!`, 'success');
+        
+        // Update the UI immediately
+        updatePageContent(contentType);
+        
+        // In a real implementation, you would send data to your backend here
+        // For now, we'll just update the local state
+        resolve(true);
     });
-
-    const result = await response.json();
-    if (!response.ok) {
-        console.error("GitHub API Error:", result);
-        throw new Error(`GitHub save failed: ${response.status} - ${result.message}`);
-    }
-
-    console.log("GitHub save successful:", result);
-    showNotification(`${config.displayName} saved to GitHub successfully!`, 'success');
-    updatePageContent(contentType);
-    return true;
 }
-
 
 // ============================
 // Data Management (Modified for GitHub)
@@ -837,7 +785,7 @@ function handlePinPointClick(itemId, pointIndex) {
 
 function renderContentCards(items, container, type, category, emptyMessage) {
     if (!container) {
-        console.log('Container not found for rendering content cards:', type);
+        console.warn('Container not found for rendering content cards:', type);
         return;
     }
     
@@ -1595,7 +1543,6 @@ function initAdminPage() {
     console.log('Initializing Admin page...');
     initPasswordProtection();
     initAdminPanel();
-	 loadAllContentLists();
 }
 
 function initPasswordProtection() {
@@ -1926,10 +1873,10 @@ function loadAllContentLists() {
 
 function loadContentList(type) {
     // Check authentication first
-    // if (sessionStorage.getItem('admin_authenticated') !== 'true') {
-        // console.log('User not authenticated, skipping content list load');
-        // return;
-    // }
+    if (sessionStorage.getItem('admin_authenticated') !== 'true') {
+        console.log('User not authenticated, skipping content list load');
+        return;
+    }
     
     const config = CONTENT_TYPES[type];
     if (!config) {
